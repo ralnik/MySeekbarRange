@@ -3,7 +3,6 @@ package ru.ralnik.myseekbarrange;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.Canvas;
@@ -14,68 +13,77 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
+
 import ru.ralnik.myseekbarrange.interfaces.OnSeekbarRangeChangeListener;
 
 
 public class SeekbarRange extends View {
     Context context;
-    private Bitmap thumbLeft;
-    private Bitmap thumbRight;
+    private Bitmap thumbLeft = getBitmap(getResources().getDrawable(R.drawable.thumb));;
+    private Bitmap thumbRight = getBitmap(getResources().getDrawable(R.drawable.thumb));
     private Paint paint;
     private float thumbLeft_x, thumbRight_x;
     private float xStart, xEnd, downX = 0;
     private int selectedThumb;
     private float offset, offsetLeft, offsetRight;
     private OnSeekbarRangeChangeListener scl;
-    private float thumb1Value, thumb2Value;
+    private Double thumb1Value, thumb2Value;
 
 
     //   ******* ATTRIBUTES ***************
-    private float sbr_absoluteMinValue, sbr_absoluteMaxValue;
+    private float sbr_absoluteMinValue = 0F;
+    private float sbr_absoluteMaxValue = 100F;
     private Drawable sbr_bgSeekbarRange;
     private int sbr_barColor;
     private int sbr_barHighlightColor;
     private Bitmap sbr_left_thumb_image;
-    private Drawable sbr_left_thumb_image_pressed;
     private Bitmap sbr_right_thumb_image;
-    private Drawable sbr_right_thumb_image_pressed;
-    private int sbr_dataType;
     private float sbr_cornerRadius;
 
     public SeekbarRange(Context context) {
         super(context);
         this.context = context;
-
+        init(null);
     }
 
     public SeekbarRange(Context context, AttributeSet attrs) {
         super(context, attrs);
         this.context = context;
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SeekbarRange);
-        try {
-            this.sbr_absoluteMinValue = typedArray.getFloat(R.styleable.SeekbarRange_sbr_absoluteMinValue, 1F);
-            this.sbr_absoluteMaxValue = typedArray.getFloat(R.styleable.SeekbarRange_sbr_absoluteMaxValue, 100F);
-            this.sbr_bgSeekbarRange = typedArray.getDrawable(R.styleable.SeekbarRange_sbr_bgSeekbarRange);
-            this.sbr_barColor = typedArray.getColor(R.styleable.SeekbarRange_sbr_barColor, Color.GRAY);
-            this.sbr_barHighlightColor = typedArray.getColor(R.styleable.SeekbarRange_sbr_barHighlightColor,Color.BLACK);
-            this.sbr_left_thumb_image = getLeftThumb(typedArray);
-            this.sbr_right_thumb_image = getRightThumb(typedArray);
-            this.sbr_left_thumb_image_pressed = typedArray.getDrawable(R.styleable.SeekbarRange_sbr_left_thumb_image_pressed);
-            this.sbr_right_thumb_image_pressed = typedArray.getDrawable(R.styleable.SeekbarRange_sbr_right_thumb_image_pressed);
-            this.sbr_dataType = typedArray.getInt(R.styleable.SeekbarRange_sbr_data_type, 0);
-            this.sbr_cornerRadius = typedArray.getFloat(R.styleable.SeekbarRange_sbr_cornerRaduis, 0F);
-        } finally {
-            typedArray.recycle();
+        init(attrs);
+    }
+
+    private void init(AttributeSet attrs){
+        if (attrs != null) {
+            TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SeekbarRange);
+            try {
+                this.sbr_absoluteMinValue = typedArray.getFloat(R.styleable.SeekbarRange_sbr_absoluteMinValue, 1F);
+                this.sbr_absoluteMaxValue = typedArray.getFloat(R.styleable.SeekbarRange_sbr_absoluteMaxValue, 100F);
+                this.sbr_bgSeekbarRange = typedArray.getDrawable(R.styleable.SeekbarRange_sbr_bgSeekbarRange);
+                this.sbr_barColor = typedArray.getColor(R.styleable.SeekbarRange_sbr_barColor, Color.GRAY);
+                this.sbr_barHighlightColor = typedArray.getColor(R.styleable.SeekbarRange_sbr_barHighlightColor, Color.BLACK);
+                this.sbr_left_thumb_image = getLeftThumb(typedArray);
+                this.sbr_right_thumb_image = getRightThumb(typedArray);
+                this.sbr_cornerRadius = typedArray.getFloat(R.styleable.SeekbarRange_sbr_cornerRaduis, 0F);
+            } finally {
+                typedArray.recycle();
+            }
+            thumbLeft = sbr_left_thumb_image;
+            thumbRight = sbr_right_thumb_image;
+
         }
+        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    protected void onSizeChanged(int width, int height, int oldw, int oldh) {
+        super.onSizeChanged(width, height, oldw, oldh);
         this.xStart = 0;
-        this.xEnd = MeasureSpec.getSize(widthMeasureSpec);
-        init();
+        this.xEnd = width;
 
+        getLayoutParams().height = thumbLeft.getHeight();
+
+        this.thumbLeft_x = xStart;
+        this.thumbRight_x = xEnd-thumbRight.getWidth();
     }
 
     public float getAbsoluteMinValue() {
@@ -96,7 +104,7 @@ public class SeekbarRange extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
+        //super.onDraw(canvas);
 
         setupBar(canvas, paint);
         setupHighlightBar(canvas, paint);
@@ -104,23 +112,6 @@ public class SeekbarRange extends View {
         canvas.drawBitmap(thumbLeft, thumbLeft_x, 0, paint);
         canvas.drawBitmap(thumbRight, thumbRight_x, 0, paint);
     }
-
-    private void init(){
-        paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inMutable = true;
-
-        thumbLeft = sbr_left_thumb_image;
-        thumbRight = sbr_right_thumb_image;
-
-        if (thumbLeft.getHeight() > getHeight())
-            getLayoutParams().height = thumbLeft.getHeight();
-        this.thumbLeft_x = xStart;
-        this.thumbRight_x = xEnd-thumbRight.getWidth();
-        invalidate();
-    }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -166,19 +157,19 @@ public class SeekbarRange extends View {
                     //если не отпускать палец, то ползунок будет перепрагивать другой ползунок, поэтому в зависимости от выбранного ползунка делаем прерывание изменяя значение selectedThumb, отличное от 3х
                     //система такая, если палец не отпускается то событие на ACTION_MOVE не прекращеается, поэтому в зависимости от выбранного ползунка ссылаеся на него, и тогда быдет выполнятся под у которого selectedThumb= 1 или selectedThumb = 2, в этот разедел он не вернутся
                     if(deltaX < downX){
-                            thumbLeft_x = mx - offsetLeft;
-                            if(thumbLeft_x < thumbRight_x){
-                                selectedThumb = 1;
-                            }
+                        thumbLeft_x = mx - offsetLeft;
+                        if(thumbLeft_x < thumbRight_x){
+                            selectedThumb = 1;
+                        }
                     } else{
-                            thumbRight_x = mx + offsetRight;
-                            if(thumbRight_x > thumbLeft_x){
-                                selectedThumb = 2;
-                            }
+                        thumbRight_x = mx + offsetRight;
+                        if(thumbRight_x > thumbLeft_x){
+                            selectedThumb = 2;
+                        }
                     }
                 }
                 break;
-                //как только палец убираем, selectedThumb обнуляем
+            //как только палец убираем, selectedThumb обнуляем
             case MotionEvent.ACTION_UP:
                 selectedThumb = 0;
                 break;
@@ -246,20 +237,20 @@ public class SeekbarRange extends View {
         rect.top    = 0.5f * (getHeight() - barHeight);
         rect.bottom = 0.5f * (getHeight() + barHeight);
         canvas.drawRoundRect(rect, this.sbr_cornerRadius, this.sbr_cornerRadius, paint);
-
-
     }
 
     private void calculateThumbValue(){
         //Вначале вычисляем процентное соотнощение от позиции thumb-ов
-        thumb1Value = (thumbLeft_x/(getWidth()-thumbLeft.getWidth()))*100;
-        thumb2Value = (thumbRight_x / (getWidth()-thumbRight.getWidth()))*100;
+        Float minValue;
+        Float maxValue;
+        minValue =  (thumbLeft_x/(getWidth()-thumbLeft.getWidth()))*100;
+        maxValue = (thumbRight_x / (getWidth()-thumbRight.getWidth()))*100;
 
         //Далее вычислием из полученого процент, процентное соотношение уже к указаными абсолютным значениям
-        String result1 = String.format("%.2f", (this.sbr_absoluteMaxValue/100)*thumb1Value).replace(",", ".");
-        String result2 = String.format("%.2f", (this.sbr_absoluteMaxValue/100)*thumb2Value).replace(",", ".");
-        thumb1Value =  Float.parseFloat(result1);
-        thumb2Value = Float.parseFloat(result2);
+        String result1 = String.format("%.2f", (this.sbr_absoluteMaxValue/100)*minValue).replace(",", ".");
+        String result2 = String.format("%.2f", (this.sbr_absoluteMaxValue/100)*maxValue).replace(",", ".");
+        thumb1Value = Double.parseDouble(result1);
+        thumb2Value = Double.parseDouble(result2);
     }
 
     public void setMin(float min){
@@ -274,12 +265,12 @@ public class SeekbarRange extends View {
         invalidate();
     }
 
-    public float getMin(){
+    public Double getMin(){
         calculateThumbValue();
         return this.thumb1Value;
     }
 
-    public float getMax(){
+    public Double getMax(){
         calculateThumbValue();
         return this.thumb2Value;
     }
@@ -331,5 +322,26 @@ public class SeekbarRange extends View {
         }else{
             return getBitmap(getResources().getDrawable(R.drawable.thumb));
         }
+    }
+
+    protected int getMeasureSpecWith(int widthMeasureSpec){
+        int width = 200;
+        if (MeasureSpec.UNSPECIFIED != MeasureSpec.getMode(widthMeasureSpec)) {
+            width = MeasureSpec.getSize(widthMeasureSpec);
+        }
+        return width;
+    }
+
+    protected int getMeasureSpecHeight(int heightMeasureSpec){
+        int height = Math.round(thumbLeft.getHeight());
+        if (MeasureSpec.UNSPECIFIED != MeasureSpec.getMode(heightMeasureSpec)) {
+            height = Math.min(height, MeasureSpec.getSize(heightMeasureSpec));
+        }
+        return height;
+    }
+
+    @Override
+    protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(getMeasureSpecWith(widthMeasureSpec), getMeasureSpecHeight(heightMeasureSpec));
     }
 }

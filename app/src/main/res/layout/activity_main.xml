@@ -9,10 +9,35 @@
     tools:context=".MainActivity">
 
 
-    <ru.ralnik.myseekbarrange.SeekbarRange
-        android:id="@+id/seekbarrange"
-        android:layout_width="wrap_content"
+    <ru.ralnik.myseekbarrange.SeekbarRangeAdvance
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        />
+        app:sbra_barHighlightColor="@color/seekbar_highlight_progress_color"
+        app:sbra_absoluteMaxValue="100"
+        app:sbra_absoluteMinValue="0"
+        app:sbra_barColor="@android:color/transparent"
+        app:sbra_bgSeekbarRange="@drawable/seekbar_progress"
+        app:sbra_data_type="_integer"
+        app:sbra_edits_ems="5"
+        app:sbra_left_thumb_image="@drawable/thumb1"
+        app:sbra_right_thumb_image="@drawable/thumb1"
+        app:sbra_textSizeOfEdits="14"
+        app:sbra_bgEdits="@color/colorGray"/>
+
+    <ru.ralnik.myseekbarrange.SeekbarRangeAdvance
+        android:id="@+id/seekbarRange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:sbra_barHighlightColor="@color/seekbar_highlight_progress_color"
+        app:sbra_absoluteMaxValue="100"
+        app:sbra_absoluteMinValue="0"
+        app:sbra_barColor="@android:color/transparent"
+        app:sbra_bgSeekbarRange="@drawable/seekbar_progress"
+        app:sbra_data_type="_double"
+        app:sbra_edits_ems="5"
+        app:sbra_left_thumb_image="@drawable/thumb1"
+        app:sbra_right_thumb_image="@drawable/thumb1"
+        app:sbra_textSizeOfEdits="14"
+        app:sbra_bgEdits="@color/colorGray"/>
 
 </LinearLayout>
