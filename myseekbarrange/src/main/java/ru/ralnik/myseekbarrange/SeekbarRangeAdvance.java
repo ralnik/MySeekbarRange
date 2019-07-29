@@ -3,6 +3,7 @@ package ru.ralnik.myseekbarrange;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import ru.ralnik.myseekbarrange.enums.Formats;
 import ru.ralnik.myseekbarrange.interfaces.OnSeekbarRangeChangeListener;
@@ -18,7 +20,7 @@ import ru.ralnik.myseekbarrange.interfaces.OnSeekbarRangeChangeListener;
 public class SeekbarRangeAdvance extends LinearLayout {
     private EditText editMin;
     private EditText editMax;
-    private LinearLayout layoutForEdits;
+    private RelativeLayout layoutForEdits;
     private ru.ralnik.myseekbarrange.SeekbarRange seekbar;
     private LayoutInflater mInflater = null;
     private View root;
@@ -36,6 +38,9 @@ public class SeekbarRangeAdvance extends LinearLayout {
     private int sbra_edits_ems;
     private boolean sbra_show_edits;
     private int sbra_dataType;
+    private int sbra_heightEdits;
+    private int sbra_widthEdits;
+    private boolean sbra_fontBoldEdits;
     private OnSeekbarRangeChangeListener scl;
 
 
@@ -62,6 +67,9 @@ public class SeekbarRangeAdvance extends LinearLayout {
             this.sbra_edits_ems = typedArray.getInt(R.styleable.SeekbarRangeAdvance_sbra_edits_ems, 4);
             this.sbra_show_edits = typedArray.getBoolean(R.styleable.SeekbarRangeAdvance_sbra_show_edits, true);
             this.sbra_dataType = typedArray.getInt(R.styleable.SeekbarRangeAdvance_sbra_data_type, 0);
+            this.sbra_widthEdits = typedArray.getInt(R.styleable.SeekbarRangeAdvance_sbra_widthEdits, LayoutParams.WRAP_CONTENT);
+            this.sbra_heightEdits = typedArray.getInt(R.styleable.SeekbarRangeAdvance_sbra_heightEdits, LayoutParams.WRAP_CONTENT);
+            this.sbra_fontBoldEdits = typedArray.getBoolean(R.styleable.SeekbarRangeAdvance_sbra_fontBoldEdits, false);
         } finally {
             typedArray.recycle();
         }
@@ -76,39 +84,19 @@ public class SeekbarRangeAdvance extends LinearLayout {
         setOrientation(VERTICAL);
         seekbar = (SeekbarRange) root.findViewById(R.id.seekbar);
 
-        layoutForEdits = (LinearLayout) root.findViewById(R.id.layoutForEdits);
+        layoutForEdits = (RelativeLayout) root.findViewById(R.id.layoutForEdits);
 
         editMin = (EditText) root.findViewById(R.id.editMin);
         editMax = (EditText) root.findViewById(R.id.editMax);
 
-
-        //Устанавливаем размер шрифта
-        editMin.setTextSize(sbra_textSizeOfEdits);
-        editMax.setTextSize(sbra_textSizeOfEdits);
-
-        //Устанавливаем цвет шрифта
-        editMin.setTextColor(sbra_textColorOfEdits);
-        editMax.setTextColor(sbra_textColorOfEdits);
-
-        //задний фон
-        editMin.setBackground(sbra_bgEditText);
-        editMax.setBackground(sbra_bgEditText);
-
-        editMin.setEms(sbra_edits_ems);
-        editMax.setEms(sbra_edits_ems);
-
-
-        editMin.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
-        editMax.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+        setupEdit(editMin);
+        setupEdit(editMax);
+        setupSeekBar(seekbar);
 
         //отображение едитов
         setShowEdits(sbra_show_edits);
 
-        //Задний фон
-        seekbar.setBackground(sbra_bgSeekbarRange);
 
-        //Цвет выделенного
-        seekbar.setBarHighlightColor(sbra_barHighlightColor);
 
         //thumb
         seekbar.setThumbLeftBitmap(sbra_left_thumb_image);
@@ -161,6 +149,31 @@ public class SeekbarRangeAdvance extends LinearLayout {
         addView(root);
     }
 
+    private void setupEdit(EditText edit){
+        if (sbra_fontBoldEdits){
+            edit.setTypeface(Typeface.DEFAULT_BOLD);
+        }
+        if(sbra_heightEdits > 0){
+            edit.getLayoutParams().height = sbra_heightEdits;
+        }
+        if(sbra_widthEdits > 0){
+            edit.getLayoutParams().width = sbra_widthEdits;
+        }
+        edit.setTextSize(sbra_textSizeOfEdits);
+        edit.setTextColor(sbra_textColorOfEdits);
+
+        edit.setBackground(sbra_bgEditText);
+
+        edit.setEms(sbra_edits_ems);
+
+        edit.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+    }
+
+    private void setupSeekBar(SeekbarRange seekbarRange){
+        seekbarRange.setBackground(sbra_bgSeekbarRange);
+        seekbarRange.setBarHighlightColor(sbra_barHighlightColor);
+        seekbarRange.setBarColor(sbra_barColor);
+    }
 
     private Number formatValue(Number value){
         final Double v = (Double) value;

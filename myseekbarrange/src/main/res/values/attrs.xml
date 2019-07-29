@@ -19,13 +19,15 @@
         <attr name="sbra_bgSeekbarRange" format="reference"/>
         <attr name="sbra_barHighlightColor" format="reference" />
         <attr name="sbra_barColor" format="color" />
-        <attr name="sbra_barSelectedColor" format="color" />
         <attr name="sbra_left_thumb_image" format="reference" />
         <attr name="sbra_right_thumb_image" format="reference" />
         <attr name="sbra_show_edits" format="boolean" />
 
         <!--************ SeekbarRange настройки для нижних edits *****************-->
         <attr name="sbra_bgEdits" format="reference" />
+        <attr name="sbra_heightEdits" format="integer"/>
+        <attr name="sbra_widthEdits" format="integer" />
+        <attr name="sbra_fontBoldEdits" format="boolean" />
         <attr name="sbra_textSizeOfEdits" format="integer" />
         <attr name="sbra_textColorOfEdits" format="color" />
         <attr name="sbra_edits_ems" format="integer"></attr>

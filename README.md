@@ -2,7 +2,7 @@
 Add a dependency to your `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'ru.ralnik:myseekbarrange:1.1.1'
+    implementation 'ru.ralnik:myseekbarrange:1.1.3'
 }
 ```
 
@@ -13,12 +13,58 @@ Default style using xml.
         android:layout_height="wrap_content"
         />
 ```
+```groovy
+<ru.ralnik.myseekbarrange.SeekbarRangeAdvance
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        />
+```
+
+Available attributes
+
+<!--************ SeekbarRange *****************-->
+- sbr_absoluteMinValue
+- sbr_absoluteMaxValue
+- sbr_bgSeekbarRange
+- sbr_barColor
+- sbr_barHighlightColor
+- sbr_left_thumb_image
+- sbr_right_thumb_image
+- sbr_cornerRaduis
+
+<!--************ SeekbarRangeAdvance *****************-->
+- sbra_absoluteMinValue" format="float" />
+- sbra_absoluteMaxValue" format="float" />
+- sbra_bgSeekbarRange" format="reference"/>
+- sbra_barHighlightColor" format="reference" />
+- sbra_barColor" format="color" />
+- sbra_left_thumb_image" format="reference" />
+- sbra_right_thumb_image" format="reference" />
+- sbra_show_edits" format="boolean" />
+- sbra_bgEdits" format="reference" />
+- sbra_heightEdits" format="integer"/>
+- sbra_widthEdits" format="integer" />
+- sbra_fontBoldEdits" format="boolean" />
+- sbra_textSizeOfEdits" format="integer" />
+- sbra_textColorOfEdits" format="color" />
+- sbra_edits_ems" format="integer"></attr>
+- sbra_data_type = "_integer | _float | _double"
+
+
+
 
 
 ## Changelog
 
 ##### 1.1.1 - 21.06.2019
 - Add New Project.
+
+##### 1.1.2 - 28.07.2019
+- fix bugs.
+- added new component "SeekbarRangeAdvance"
+
+##### 1.1.3 - 29.07.2019
+- fix bugs into SeekbarRangeAdvance class.
 
 
 # LICENSE

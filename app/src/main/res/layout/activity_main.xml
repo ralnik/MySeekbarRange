@@ -18,11 +18,11 @@
         app:sbra_barColor="@android:color/transparent"
         app:sbra_bgSeekbarRange="@drawable/seekbar_progress"
         app:sbra_data_type="_integer"
-        app:sbra_edits_ems="5"
         app:sbra_left_thumb_image="@drawable/thumb1"
         app:sbra_right_thumb_image="@drawable/thumb1"
-        app:sbra_textSizeOfEdits="14"
+        app:sbra_textSizeOfEdits="13"
         app:sbra_bgEdits="@color/colorGray"/>
+
 
     <ru.ralnik.myseekbarrange.SeekbarRangeAdvance
         android:id="@+id/seekbarRange"
@@ -39,5 +39,6 @@
         app:sbra_right_thumb_image="@drawable/thumb1"
         app:sbra_textSizeOfEdits="14"
         app:sbra_bgEdits="@color/colorGray"/>
+
 
 </LinearLayout>

@@ -11,36 +11,36 @@
         android:layout_height="wrap_content"
         app:sbr_left_thumb_image="@drawable/thumb"
         app:sbr_right_thumb_image="@drawable/thumb"/>
-    <LinearLayout
-        android:id="@+id/layoutForEdits"
-        android:layout_width="match_parent"
+<RelativeLayout
+    android:id="@+id/layoutForEdits"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="10dp"
+    >
+
+    <EditText
+        android:id="@+id/editMin"
+        style="@style/myTextStyle"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:paddingTop="10dp">
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:inputType="number"
+        android:text="0" />
+    <EditText
+        android:id="@+id/editMax"
+        style="@style/myTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:text="100"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>
 
-        <EditText
-            android:id="@+id/editMin"
-            style="@style/myTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="3"
-            android:inputType="number"
-            android:text="0" />
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"/>
 
-        <EditText
-            android:id="@+id/editMax"
-            style="@style/myTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="3"
-            android:inputType="number"
-            android:text="100" />
-    </LinearLayout>
+
 
 </LinearLayout>
