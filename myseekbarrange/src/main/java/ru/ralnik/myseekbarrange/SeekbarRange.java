@@ -19,7 +19,7 @@ import ru.ralnik.myseekbarrange.interfaces.OnSeekbarRangeChangeListener;
 
 public class SeekbarRange extends View {
     Context context;
-    private Bitmap thumbLeft = getBitmap(getResources().getDrawable(R.drawable.thumb));;
+    private Bitmap thumbLeft = getBitmap(getResources().getDrawable(R.drawable.thumb));
     private Bitmap thumbRight = getBitmap(getResources().getDrawable(R.drawable.thumb));
     private Paint paint;
     private float thumbLeft_x, thumbRight_x;
@@ -36,8 +36,8 @@ public class SeekbarRange extends View {
     private Drawable sbr_bgSeekbarRange;
     private int sbr_barColor;
     private int sbr_barHighlightColor;
-    private Bitmap sbr_left_thumb_image;
-    private Bitmap sbr_right_thumb_image;
+    private Drawable sbr_left_thumb_image;
+    private Drawable sbr_right_thumb_image;
     private float sbr_cornerRadius;
 
     public SeekbarRange(Context context) {
@@ -67,8 +67,8 @@ public class SeekbarRange extends View {
             } finally {
                 typedArray.recycle();
             }
-            thumbLeft = sbr_left_thumb_image;
-            thumbRight = sbr_right_thumb_image;
+            thumbLeft = getBitmap(sbr_left_thumb_image);
+            thumbRight = getBitmap(sbr_right_thumb_image);
 
         }
         paint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -308,19 +308,19 @@ public class SeekbarRange extends View {
         return (drawable != null) ? ((BitmapDrawable) drawable).getBitmap() : null;
     }
 
-    protected Bitmap getLeftThumb(final TypedArray typedArray){
+    protected Drawable getLeftThumb(final TypedArray typedArray){
         if (typedArray.getDrawable(R.styleable.SeekbarRange_sbr_left_thumb_image) != null) {
-            return getBitmap(typedArray.getDrawable(R.styleable.SeekbarRange_sbr_left_thumb_image));
+            return typedArray.getDrawable(R.styleable.SeekbarRange_sbr_left_thumb_image);
         }else{
-            return getBitmap(getResources().getDrawable(R.drawable.thumb));
+            return getResources().getDrawable(R.drawable.thumb);
         }
     }
 
-    protected Bitmap getRightThumb(final TypedArray typedArray){
+    protected Drawable getRightThumb(final TypedArray typedArray){
         if (typedArray.getDrawable(R.styleable.SeekbarRange_sbr_right_thumb_image) != null) {
-            return getBitmap(typedArray.getDrawable(R.styleable.SeekbarRange_sbr_right_thumb_image));
+            return typedArray.getDrawable(R.styleable.SeekbarRange_sbr_right_thumb_image);
         }else{
-            return getBitmap(getResources().getDrawable(R.drawable.thumb));
+            return getResources().getDrawable(R.drawable.thumb);
         }
     }
 
