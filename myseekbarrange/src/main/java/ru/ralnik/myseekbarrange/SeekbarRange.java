@@ -9,6 +9,10 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.drawable.VectorDrawable;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
+import android.support.graphics.drawable.VectorDrawableCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -303,9 +307,17 @@ public class SeekbarRange extends View {
     //////////////////////////////////////////
     // PROTECTED METHODS
     //////////////////////////////////////////
-
     protected Bitmap getBitmap(Drawable drawable) {
-        return (drawable != null) ? ((BitmapDrawable) drawable).getBitmap() : null;
+        //return (drawable != null) ? ((BitmapDrawable) drawable).getBitmap() : null;
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        } else {
+            Bitmap bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawable.draw(canvas);
+            return bitmap;
+        }
     }
 
     protected Drawable getLeftThumb(final TypedArray typedArray){
