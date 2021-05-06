@@ -49,14 +49,18 @@ public class SeekbarRangeAdvance extends LinearLayout {
         init(context);
     }
 
-    public SeekbarRangeAdvance(Context context, AttributeSet attrs) {
+    public SeekbarRangeAdvance(Context context, AttributeSet attrs) throws Exception {
         super(context, attrs);
 
         TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.SeekbarRangeAdvance);
         try {
             this.sbra_textSizeOfEdits = typedArray.getInt(R.styleable.SeekbarRangeAdvance_sbra_textSizeOfEdits, 8);
             this.sbra_textColorOfEdits = typedArray.getColor(R.styleable.SeekbarRangeAdvance_sbra_textColorOfEdits, Color.BLACK);
-            this.sbra_absoluteMinValue = typedArray.getFloat(R.styleable.SeekbarRangeAdvance_sbra_absoluteMinValue, 0F);
+            if (typedArray.getFloat(R.styleable.SeekbarRangeAdvance_sbra_absoluteMinValue, 1F) != 0) {
+                this.sbra_absoluteMinValue = typedArray.getFloat(R.styleable.SeekbarRangeAdvance_sbra_absoluteMinValue, 1F);
+            } else {
+                throw new Exception("Минимальный показатель не должен быть равен '0'");
+            }
             this.sbra_absoluteMaxValue = typedArray.getFloat(R.styleable.SeekbarRangeAdvance_sbra_absoluteMaxValue, 100F);
             this.sbra_bgEditText = typedArray.getDrawable(R.styleable.SeekbarRangeAdvance_sbra_bgEdits);
             this.sbra_bgSeekbarRange = typedArray.getDrawable(R.styleable.SeekbarRangeAdvance_sbra_bgSeekbarRange);
@@ -113,7 +117,11 @@ public class SeekbarRangeAdvance extends LinearLayout {
             @Override
             public void SeekbarRangeValueChanged(Double Thumb1Value, Double Thumb2Value) {
 
-                editMin.setText(formatValue(Thumb1Value).toString());
+                String resultMin = null;
+                if (Thumb1Value < sbra_absoluteMinValue) {
+                    resultMin = String.valueOf(sbra_absoluteMinValue);
+                } else resultMin = Thumb1Value.toString();
+                editMin.setText(resultMin);
                 editMax.setText(formatValue(Thumb2Value).toString());
 
                 if(scl !=null){
@@ -199,7 +207,6 @@ public class SeekbarRangeAdvance extends LinearLayout {
         }
 
         public Number getAbsoluteMinValue() {
-
             return formatValue(Double.parseDouble(seekbar.getAbsoluteMinValue() + ""));
         }
 
@@ -208,11 +215,15 @@ public class SeekbarRangeAdvance extends LinearLayout {
         }
 
         public void setAbsoluteMinValue(Number min) {
-            seekbar.setAbsoluteMinValue(min.floatValue());
+            sbra_absoluteMinValue = min.floatValue();
+            seekbar.setAbsoluteMinValue(sbra_absoluteMinValue);
+            editMin.setText(min.toString());
         }
 
         public void setAbsoluteMaxValue(Number max) {
-            seekbar.setAbsoluteMaxValue(max.floatValue());
+        sbra_absoluteMaxValue = max.floatValue();
+            seekbar.setAbsoluteMaxValue(sbra_absoluteMaxValue);
+            editMax.setText(max.toString());
         }
 
         public void setMinValue(Number min) {
@@ -233,7 +244,9 @@ public class SeekbarRangeAdvance extends LinearLayout {
 
         public void setDefaultValue(){
             setMinValue(seekbar.getAbsoluteMinValue());
+            editMin.setText(String.valueOf(seekbar.getAbsoluteMinValue()));
             setMaxValue(seekbar.getAbsoluteMaxValue());
+            editMax.setText(String.valueOf(seekbar.getAbsoluteMaxValue()));
         }
 
     public void setSeekBarChangeListener(OnSeekbarRangeChangeListener scl){
