@@ -217,13 +217,13 @@ public class SeekbarRangeAdvance extends LinearLayout {
         public void setAbsoluteMinValue(Number min) {
             sbra_absoluteMinValue = min.floatValue();
             seekbar.setAbsoluteMinValue(sbra_absoluteMinValue);
-            editMin.setText(String.valueOf(formatValue(min)));
+            editMin.setText(String.valueOf(formatValue(Double.parseDouble(sbra_absoluteMinValue+""))));
         }
 
         public void setAbsoluteMaxValue(Number max) {
         sbra_absoluteMaxValue = max.floatValue();
             seekbar.setAbsoluteMaxValue(sbra_absoluteMaxValue);
-            editMax.setText(String.valueOf(formatValue(max)));
+            editMax.setText(String.valueOf(max));
         }
 
         public void setMinValue(Number min) {
@@ -244,7 +244,7 @@ public class SeekbarRangeAdvance extends LinearLayout {
 
         public void setDefaultValue(){
             setMinValue(seekbar.getAbsoluteMinValue());
-            editMin.setText(String.valueOf(seekbar.getAbsoluteMinValue()));
+            editMin.setText(String.valueOf(formatValue(Double.parseDouble(seekbar.getAbsoluteMinValue()+""))));
             setMaxValue(seekbar.getAbsoluteMaxValue());
             editMax.setText(String.valueOf(seekbar.getAbsoluteMaxValue()));
         }
