@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/ralnik/mySeekbarRange'
     gitUrl = 'https://github.com/ralnik/mySeekbarRange.git'
 
-    libraryVersion = '1.1.6'
+    libraryVersion = '1.1.7'
 
     developerId = 'ralnik'
     developerName = 'Alexander Raschevkin'
