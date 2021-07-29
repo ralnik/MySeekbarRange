@@ -246,7 +246,7 @@ public class SeekbarRangeAdvance extends LinearLayout {
             setMinValue(seekbar.getAbsoluteMinValue());
             editMin.setText(String.valueOf(formatValue(Double.parseDouble(seekbar.getAbsoluteMinValue()+""))));
             setMaxValue(seekbar.getAbsoluteMaxValue());
-            editMax.setText(String.valueOf(seekbar.getAbsoluteMaxValue()));
+            editMax.setText(String.valueOf(formatValue(Double.parseDouble(seekbar.getAbsoluteMaxValue()+""))));
         }
 
     public void setSeekBarChangeListener(OnSeekbarRangeChangeListener scl){

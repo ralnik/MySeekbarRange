@@ -10,7 +10,6 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -248,8 +247,6 @@ public class SeekbarRange extends View {
         Float resultMaxValue;
         minValue = (thumbLeft_x / (getWidth() - thumbLeft.getWidth())) * 100;
         maxValue = (thumbRight_x / (getWidth() - thumbRight.getWidth())) * 100;
-        Log.d("myDebug", "minValue : " + minValue);
-        Log.d("myDebug", "maxValue : " + maxValue);
         //Далее вычислием из полученого процент, процентное соотношение уже к указаными абсолютным значениям
         String result1 = String.format("%.2f", (this.sbr_absoluteMaxValue/100)*minValue).replace(",", ".");
         String result2 = String.format("%.2f", (this.sbr_absoluteMaxValue/100)*maxValue).replace(",", ".");
